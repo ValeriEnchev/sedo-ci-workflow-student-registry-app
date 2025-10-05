@@ -1,0 +1,53 @@
+# Workflow to run CI/CD tests for the Node.js "Student Registry" application.
+# It uses a strategy matrix to test on multiple Node.js versions.
+
+name: Node.js CI
+
+# Configure the workflow to run on every push and pull request to the 'main' branch
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # Define the job that will execute the build and test steps
+  build-and-test:
+    # Use Ubuntu Linux as the runner environment
+    runs-on: ubuntu-latest
+    
+    # Define a build matrix to run the job multiple times with different configurations
+    strategy:
+      matrix:
+        # Define the Node.js versions to test against
+        node-version: [18.x, 20.x, 22.x]
+        
+    # The name displayed for each run in the GitHub Actions UI
+    name: Node.js ${{ matrix.node-version }}
+
+    steps:
+    
+    # Step 1: Checkout the repository code
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # Step 2: Set up the Node.js environment using the version from the matrix
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        # Set a dependency cache for faster installs (assumes package-lock.json exists)
+        cache: 'npm'
+
+    # Step 3: Install all project dependencies
+    - name: Install Dependencies
+      run: npm install
+
+    # Step 4: Run the application's tests
+    # We assume your package.json has a "test" script that handles starting and testing the app.
+    # If the app requires a separate "start" command, you might need to use a tool like "start-server-and-test".
+    - name: Run Tests
+      # If your tests are simple unit tests, 'npm test' is sufficient.
+      # If your tests require the server to be running (e.g., end-to-end tests),
+      # ensure your 'npm test' script manages the server lifecycle.
+      run: npm test
