@@ -1,7 +1,7 @@
 # Workflow to run CI/CD tests for the Node.js "Student Registry" application.
 # It uses a strategy matrix to test on multiple Node.js versions.
 
-name: Node.js CI
+name: Build and test Matrix CI
 
 # Configure the workflow to run on every push and pull request to the 'main' branch
 on:
@@ -21,7 +21,8 @@ jobs:
       matrix:
         # Define the Node.js versions to test against
         node-version: [18.x, 20.x, 22.x]
-        
+      fail-fast: false
+
     # The name displayed for each run in the GitHub Actions UI
     name: Node.js ${{ matrix.node-version }}
 
