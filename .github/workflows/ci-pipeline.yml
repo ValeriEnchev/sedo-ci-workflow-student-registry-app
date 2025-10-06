@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: npm install    
     - name: Execute static security tests
-      run: npm audit fix 
+      run: npm audit fix --force
     - name: Execute integration tests
       run: npm run test
 
