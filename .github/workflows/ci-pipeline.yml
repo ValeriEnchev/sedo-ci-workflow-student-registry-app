@@ -40,7 +40,7 @@ jobs:
   #deploy:
     #runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/main'
-    #needs: test
+    #needs: build-and-test
     #steps:
       #- name: Deploy to production
         #uses: JorgeLNJunior/render-deploy@v1.4.4
